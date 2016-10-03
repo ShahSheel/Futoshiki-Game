@@ -1,0 +1,119 @@
+
+FutoshikiPuzzle ReadME
+
+Candidate Number: 132224
+
+Displaying the data:
+
+-The main  panels, each doing there own job:
+
+-> contentPane - Menu item panel is merged with contentPane then removed when they 
+click a new game. Gridbox is then added to contentPane. By merging the panels together
+it allows the game to be fully resizable without changing its appearence. 
+-> gridPanel - grid panel for the menu display
+-> GridBox - Panel for the futoshiki grid 
+-> SidePanel -> Displays the button panels in game, doesn't generate when on 
+gridPanel.
+
+
+The data is displayed in the GUI by using pre-existing setters and getters from
+the futoshikipuzzle. In the GUI, it calls the instance of futoshikipuzzle
+then uses that instance to call the methods through futoshikipuzzle. 
+
+For example:
+puzzle.setSquare(row,colum,value) where puzzle this is an instance
+of futoshikipuzzle and setSquare a method in futoshikipuzzle which allows the 
+user to enter a number which then is stored into the grid.
+
+The grid is is always kept up to date by removing panels and adding panels.
+
+gridBox.removeAll() is used most of the time as it removes the entire grid then
+prompts the user to createGame() which asks the user to set a gridSize. The value 
+gridSize is then passed onto newGame which creates a the legal and solveable grid.
+ what afterwords is done is updateUI , revalidate and repaint. Validate is the 
+most revalidate is the most important component that is needed to display the 
+data, since it lays the component out again and repaint itself and is only 
+needed if you're changing the component (gridSize in my case). Thus it keeps 
+updating the data.  
+
+Editing the data
+
+Since my code is using JFormattedTextFields and not JTextFields, the user can only
+enter a number between 0 and gridsize. They are unable to delete their input number
+however, they can replace "their" input number with another number for instance 0 or 
+1.
+
+They are unable to edit the row constraints as these are JLabels.
+They are unable to edit the given grid as it becomes JFormattedTextFields for the
+numbers in the given grid become uneditable.
+They are unable to edit the gridsize after defining a gridsize. What they can do
+if they prefer is create a new game with a new gridsize. 
+
+Checking legality and reporting problems:
+
+NB: IsLegal does not include isEmpty() because otherwise it will never be able 
+to save a game, they would have to complete the gave then save it! 
+
+To check for legality, I have used a do while loop, which simply keeps calling
+fillPuzzle till it becomes solvable. Once it is solvable it removes random 
+numbers from the grid. This method is called newGame();
+
+If the user attempts to enter an illegal value such as out of bounds exception,
+the number automatically gets removed and not inputted into the setSquare method.
+
+When inputting a duplicated number more than once, for example filling an entire
+grid with duplicated numbers and they then click on "Check My Answer" it will first
+display the row constraints errors which they need to fix first. For example: 
+
+1 > 1 
+1 < 1 
+2 < 1
+
+After they have fixed that issue and they click on "Check My answer" again, it will
+then display all the duplicated numbers for example:
+
+Duplicated number in row 1 column 2 , number 1
+Duplicated number in row 2 column 1 , number 1
+
+This all ties in with the IsLegal() method as the IsLegal() checks if the 
+arraylist of printProblems is empty, if it is empty then the puzzle is legal, else
+it prints out the problems by calling getProblems() which then gets displayed in
+a JOptionPanel. 
+
+However additional methods needed to be created such as checking if the grid is 
+empty or not. Which is then checked by the GUI class when they click on 
+"Check My Answer" .If (isEmpty()){ JOptionPanel ... } . 
+
+When attempting to save to a file, it checks for the legality again, if there is
+a problem then it it will not save the file and alert the user to fix the mistake
+till it becomes legal again thus they are able to save the game. 
+
+
+Set grid size: 
+
+The user is able to successfully load a game from 1 - 7 in less than 2 seconds.
+
+It works by creating a new instance of futoshikipuzzle and a JOptionPane.showInputDialog
+which the user enters a number (Can only be a number) which gets passed into a 
+an integer value in and then stored in the new instance.
+
+String setGridSize("Enter number: "+ %D");
+int gridSize = Integer.parseInt(setGridSize)
+puzzle = new FutoshikiPuzzle(gridSize);
+
+The  (gridSize) is then passed across as a parameter to newGame() which simply
+created a legal puzzle of that gridSize (the same do while loop that creates a
+legal and solvable grid). 
+
+Save game & Load game:
+
+The user must save the game in a format of .ser, the user can save there game
+anywhere they wish to as it is using a JFileChooser choose and a parameter File
+file where it gets the selected file name and passes file accross as a parameter
+ to savegame  and loadgame where it then saved or loaded as an object (puzzle) .
+
+
+
+                                                                                                                                       
+                                                                                                                                       
+                                                                                                                                       
